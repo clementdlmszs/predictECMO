@@ -7,6 +7,6 @@ WHERE
 	encounterId = :encounterId
     AND attributeId IN (12528, 12531, 12535) 
 	AND chartTime BETWEEN :installation_date AND DATEADD(HOUR, 4, :withdrawal_date)
-    AND try_cast(replace(terseForm, ',', '.') as decimal) > 0
+    --AND try_cast(replace(terseForm, ',', '.') as decimal) > 0
 ORDER BY
     temps

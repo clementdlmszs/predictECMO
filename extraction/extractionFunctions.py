@@ -94,12 +94,6 @@ def extractTemperature(con, sqlPath, dataPath, encounterId, installation_date, w
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
 
 
-def extractTypeECMO(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
-    dataExtracted = "TypeECMO"
-    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
-    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
-
-
 def extractWeight(con, sqlPath, dataPath, encounterId, installation_date):
     dataExtracted = "Weight"
     params = [["encounterId",encounterId],["installation_date",installation_date]]
@@ -115,4 +109,10 @@ def extractWeight2(con, sqlPath, dataPath, encounterId, installation_date):
 def extractHeight(con, sqlPath, dataPath, encounterId, installation_date):
     dataExtracted = "Height"
     params = [["encounterId",encounterId],["installation_date",installation_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "Diurese"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)

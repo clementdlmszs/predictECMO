@@ -6,6 +6,6 @@ FROM
 WHERE
 	encounterId = :encounterId
     AND interventionId = 4008
-    AND valueNumber > 0
+    --AND valueNumber > 0
 ORDER BY
     temps
