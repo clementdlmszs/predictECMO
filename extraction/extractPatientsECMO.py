@@ -8,7 +8,7 @@ DATABASE = 'CisReportingActiveDB0'
 engine = create_engine('mssql+pymssql://@' + SERVER + '/' + DATABASE)
 
 sqlFile = "extraction/scriptsSQL/exportPatientsECMO.sql"
-destinationFile = "data/patients.csv"
+destinationFile = "data/patients.parquet"
 
 with engine.connect() as con:
     with open(sqlFile) as file:
@@ -18,4 +18,4 @@ with engine.connect() as con:
 
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
 
-        df.to_csv(destinationFile, index=False)
+        df.to_parquet(destinationFile, index=False)

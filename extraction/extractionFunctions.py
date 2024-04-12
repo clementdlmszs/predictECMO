@@ -5,7 +5,7 @@ import pandas as pd
 def genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId):
     
     sqlFile = sqlPath + "extract" + dataExtracted + ".sql"
-    dataFile = dataPath + str(encounterId) + "/" + dataExtracted + ".csv"
+    dataFile = dataPath + str(encounterId) + "/" + dataExtracted + ".parquet"
 
     with open(sqlFile) as file:
         query = text(file.read())
@@ -17,7 +17,7 @@ def genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId):
         result = con.execute(query)
 
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
-        df.to_csv(dataFile, index=False)
+        df.to_parquet(dataFile, index=False)
     
     return result
 
