@@ -37,5 +37,6 @@ with engine.connect() as con:
         # extractWeight(con, sqlPath, dataPath, encounterId, installation_date)
         # extractWeight2(con, sqlPath, dataPath, encounterId, installation_date)
         # extractHeight(con, sqlPath, dataPath, encounterId, installation_date)
-        extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        extractDeath(con, sqlPath, dataPath, encounterId)
 

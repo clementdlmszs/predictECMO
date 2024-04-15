@@ -1,16 +1,3 @@
-WITH demographicSimplifie AS
-(
-	SELECT
-		D.attributeId,
-		D.valueDateTime,
-		D.verboseForm,
-		D.utcChartTime
-	FROM
-		CISReportingDB.dar.PtDemographic D
-	WHERE
-		D.encounterId = 258
-		AND D.attributeId IN (23893,28160)
-)
 SELECT 
 (
 	CASE WHEN  
@@ -41,12 +28,21 @@ SELECT
 	        THEN 1
 	        ELSE 0
 	        END
-	   -- +
-	   --     CASE WHEN 
-	   --         P.code_destination = 65
-	   --     THEN 1
-	   --     ELSE NULL
-	   --     END
+	+
+		CASE WHEN 
+		(
+			SELECT
+				TOP 1 LOWER(ptc.dischargeDisposition)
+			FROM
+				CISReportingDB.dbo.PtCensus ptc
+			WHERE
+				ptc.encounterId = :encounterId
+			ORDER BY
+				ptc.outTime DESC 
+		) LIKE '%deces%'
+			THEN 1
+			ELSE 0
+			END 
 	) > 0
 	THEN 
 	1

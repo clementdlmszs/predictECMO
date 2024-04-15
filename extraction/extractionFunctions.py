@@ -2,6 +2,9 @@ from sqlalchemy import create_engine, text
 import pandas as pd
 
 
+# Fonction générique d'extraction d'une donnée, appelée par chaque fonction spécifique d'extraction
+# Les données sont stockées dans des fichiers correspondant au nom de la variable enregistrée
+# et dans le dossier associé à l'encounterId correspondant
 def genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId):
     
     sqlFile = sqlPath + "extract" + dataExtracted + ".sql"
@@ -115,4 +118,10 @@ def extractHeight(con, sqlPath, dataPath, encounterId, installation_date):
 def extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
     dataExtracted = "Diurese"
     params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractDeath(con, sqlPath, dataPath, encounterId):
+    dataExtracted = "Death"
+    params = [["encounterId",encounterId]]
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
