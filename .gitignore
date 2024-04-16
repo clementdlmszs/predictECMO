@@ -2,6 +2,7 @@ data/
 tests/
 *.ipynb
 .vscode
+preProcessedData/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -10,3 +10,11 @@ for encounterId in patients_df["encounterId"]:
 
     if not os.path.exists(folderPath):
         os.makedirs(folderPath)
+
+
+for encounterId in patients_df["encounterId"]:
+
+    folderPath = "preProcessedData/"+str(encounterId)
+
+    if not os.path.exists(folderPath):
+        os.makedirs(folderPath) 
