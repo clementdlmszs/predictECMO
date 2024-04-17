@@ -29,7 +29,7 @@ def gestionPoids():
         numeric_values2 = pd.to_numeric(df2.iloc[:, 0], errors='coerce').dropna()
 
         if df.size == 0 and df2.size == 0:
-            meanWeight = 70
+            meanWeight = 80
         elif df.size == 0:
             meanWeight = np.mean(numeric_values2)
         elif df2.size == 0:
@@ -80,43 +80,67 @@ def gestionDiurese(h_for_avg):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def gestionHR():
+
+def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
     
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
         encounterId = str(row["encounterId"])
 
-        dfPath = preProcessedDataPath + encounterId + "/HR.parquet"
+        dfPath = preProcessedDataPath + encounterId + "/" + variableStr + ".parquet"
         
         df = pd.read_parquet(dfPath)
-        
-        hr = pd.read_parquet(dataPath+encounterId+"/HR.parquet").to_numpy()[0]
 
-        liste_hr = []
-        liste_temps = []
-        
-        lastTime = int(df['temps'].iloc[-1] // 60)
-        time = df['temps'][0]
+        sizeDf = df[columnValuesStr].size
+        new_index = range(sizeDf)
+        df.index = new_index
 
+        liste_valeurs = []
+        
+        # Test si le df est vide
+        if sizeDf > 0:
+            lastTime = int(df['temps'].iloc[-1] // frequenceAcquisition)
+        else:
+            lastTime = 0
+
+        nbValeurs = df.index.max()+1
+
+        # On calcule la valeur moyenne de la variable d'intérêt sur un intervalle de temps donné en paramètre
+        index_current_time = 0
         for i in range(lastTime):
-            hr_moy = 0
-            j = i
-            time_j = df['temps'][j]
+            valeur_moy = 0
+            current_time = df['temps'][index_current_time]
             compteur = 0
-            while time_j < (i+1)*60:
-                hr_moy += df['HR']
+            while (current_time < (i+1)*frequenceAcquisition) and (index_current_time < nbValeurs):
+                valeur_moy += df[columnValuesStr][index_current_time] 
+
+                index_current_time += 1
+                current_time = df['temps'][index_current_time]
                 compteur += 1
             
             if compteur > 0:
-                liste_hr.append(hr_moy)
+                liste_valeurs.append(valeur_moy/compteur)
             else:
-                liste_hr.append(np.nan)
+                liste_valeurs.append(np.nan)
 
-        newdf = pd.DataFrame({'diurese': liste_diurese_moy, 'temps': liste_temps})
+        
+        liste_temps = list(range(0,lastTime*frequenceAcquisition,frequenceAcquisition))
 
-        newDfPath = preProcessedDataPath + encounterId + "/DiureseMoy.parquet"
+        newdf = pd.DataFrame({columnValuesStr: liste_valeurs, 'temps': liste_temps})
+
+        newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
-
 
 # gestionPoids()
 # gestionDiurese(6)
+# moyenne_sur_x_minutes("HR", 60, "HR")
+# moyenne_sur_x_minutes("SpO2", 60, "SpO2")
+# moyenne_sur_x_minutes("PAD_I", 60, "pad_i")
+# moyenne_sur_x_minutes("PAM_I", 60, "pam_i")
+# moyenne_sur_x_minutes("PAS_I", 60, "pas_i")
+# moyenne_sur_x_minutes("RR", 60, "RR")
+# moyenne_sur_x_minutes("Temperature", 60, "temperature")
+# moyenne_sur_x_minutes("DebitECMO", 60, "debit")
+moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
+moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
+moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
