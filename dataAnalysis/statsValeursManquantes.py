@@ -62,5 +62,5 @@ print("Percentage of missing values for Temperature: " + str(missingValues_Tempe
 missingValues_DebitECMO = percentageMissingValues("DebitECMO_Moy")
 print("Percentage of missing values for DebitECMO: " + str(missingValues_DebitECMO))
 
-missingValues_Diurese = percentageMissingValues("DiureseMoy")
+missingValues_Diurese = percentageMissingValues("Diurese_Moy")
 print("Percentage of missing values for Diuresis: " + str(missingValues_Diurese))

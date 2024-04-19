@@ -1,5 +1,5 @@
 SELECT 
-    valueNumber as debit,
+    try_cast(replace(valueNumber, ',', '.') as float) as debit,
     DATEDIFF(MINUTE, :installation_date, chartTime) as temps
 FROM 
     CISReportingDB.dar.PatientAssessment

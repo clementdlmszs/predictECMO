@@ -1,5 +1,5 @@
 SELECT
-    try_cast(replace(terseForm, ',', '.') as decimal) AS pad_i,
+    try_cast(replace(terseForm, ',', '.') as float) AS pad_i,
     DATEDIFF(MINUTE, :installation_date, chartTime) as temps
 FROM 
     [CISReportingDB].[dbo].[PtAssessment]

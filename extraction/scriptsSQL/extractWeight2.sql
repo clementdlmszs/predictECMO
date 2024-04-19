@@ -1,5 +1,5 @@
 SELECT
-    valueNumber weight,
+    try_cast(replace(valueNumber, ',', '.') as float) weight,
     DATEDIFF(MINUTE, :installation_date, chartTime) as temps    
 FROM 
     CISReportingDB.dbo.PtAssessment
