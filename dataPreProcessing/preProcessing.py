@@ -19,8 +19,8 @@ def gestionPoids():
 
         encounterId = str(row["encounterId"])
 
-        dfPath = dataPath + encounterId + "/Weight.parquet"
-        dfPath2 = dataPath + encounterId + "/Weight2.parquet"
+        dfPath = preProcessedDataPath + encounterId + "/Weight.parquet"
+        dfPath2 = preProcessedDataPath + encounterId + "/Weight2.parquet"
         
         df = pd.read_parquet(dfPath)
         df2 = pd.read_parquet(dfPath2)
@@ -43,6 +43,27 @@ def gestionPoids():
         newDfPath = preProcessedDataPath + encounterId + "/Weight3.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
+
+def gestionTaille():
+     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+
+        encounterId = str(row["encounterId"])
+
+        dfPath = preProcessedDataPath + encounterId + "/Height.parquet"
+
+        df = pd.read_parquet(dfPath)
+        
+        numeric_values = pd.to_numeric(df.iloc[:, 0], errors='coerce').dropna()
+
+        if df.size == 0:
+            meanHeight = 175
+        else:
+            meanHeight = np.mean(numeric_values)
+        
+        newdf = pd.DataFrame([meanHeight])
+
+        newDfPath = preProcessedDataPath + encounterId + "/Height_Moy.parquet"
+        pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 def gestionDiurese(h_for_avg):
     
@@ -76,7 +97,7 @@ def gestionDiurese(h_for_avg):
 
         newdf = pd.DataFrame({'diurese': liste_diurese_moy, 'temps': liste_temps})
 
-        newDfPath = preProcessedDataPath + encounterId + "/DiureseMoy.parquet"
+        newDfPath = preProcessedDataPath + encounterId + "/Diurese_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
@@ -132,6 +153,7 @@ def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 # gestionPoids()
+gestionTaille()
 # gestionDiurese(6)
 # moyenne_sur_x_minutes("HR", 60, "HR")
 # moyenne_sur_x_minutes("SpO2", 60, "SpO2")
@@ -141,6 +163,6 @@ def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
 # moyenne_sur_x_minutes("RR", 60, "RR")
 # moyenne_sur_x_minutes("Temperature", 60, "temperature")
 # moyenne_sur_x_minutes("DebitECMO", 60, "debit")
-moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
-moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
-moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
+# moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
+# moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
+# moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
