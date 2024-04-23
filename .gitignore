@@ -1,9 +1,10 @@
 data/
+dataRea/
 tests/
 *.ipynb
-.vscode
-preProcessedData/
 *.csv
+*.parquet
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

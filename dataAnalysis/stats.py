@@ -4,7 +4,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 
-dataPath = "../data/"
+dataPath = "data/"
 
 patients_df = pd.read_parquet(dataPath + "patients.parquet")
 
@@ -54,46 +54,46 @@ plotHistAndBox(axs, 0, debitECMO, "ECMO Debit")
 height = allValues("Height") 
 plotHistAndBox(axs, 1, height, "Height")
 
-hr = allValues("HR")
-plotHistAndBox(axs, 2, hr, "Heart Rate")
+# hr = allValues("HR")
+# plotHistAndBox(axs, 2, hr, "Heart Rate")
 
-pad_i = allValues("PAD_I")
-plotHistAndBox(axs, 3, pad_i, "Invasive DIASTOLIC Blood Pressure")
+# pad_i = allValues("PAD_I")
+# plotHistAndBox(axs, 3, pad_i, "Invasive DIASTOLIC Blood Pressure")
 
-pad_ni = allValues("PAD_NI")
-plotHistAndBox(axs, 4, pad_ni, "Non Invasive DIASTOLIC Blood Pressure")
+# pad_ni = allValues("PAD_NI")
+# plotHistAndBox(axs, 4, pad_ni, "Non Invasive DIASTOLIC Blood Pressure")
 
-pas_i = allValues("PAS_I")
-plotHistAndBox(axs, 5, pas_i, "Invasive SYSTOLIC Blood Pressure")
+# pas_i = allValues("PAS_I")
+# plotHistAndBox(axs, 5, pas_i, "Invasive SYSTOLIC Blood Pressure")
 
-pas_ni = allValues("PAS_NI")
-plotHistAndBox(axs, 6, pas_ni, "Non Invasive SYSTOLIC Blood Pressure")
+# pas_ni = allValues("PAS_NI")
+# plotHistAndBox(axs, 6, pas_ni, "Non Invasive SYSTOLIC Blood Pressure")
 
-pam_i = allValues("PAM_I")
-plotHistAndBox(axs, 7, pam_i, "Invasive AVERAGE Blood Pressure")
+# pam_i = allValues("PAM_I")
+# plotHistAndBox(axs, 7, pam_i, "Invasive AVERAGE Blood Pressure")
 
-pam_ni = allValues("PAM_NI")
-plotHistAndBox(axs, 8, pam_ni, "Non Invasive AVERAGE Blood Pressure")
+# pam_ni = allValues("PAM_NI")
+# plotHistAndBox(axs, 8, pam_ni, "Non Invasive AVERAGE Blood Pressure")
 
-rr = allValues("RR")
-plotHistAndBox(axs, 9, rr, "Respiratory Rate")
+# rr = allValues("RR")
+# plotHistAndBox(axs, 9, rr, "Respiratory Rate")
 
-spo2 = allValues("SpO2")
-plotHistAndBox(axs, 10, spo2, "SpO2")
+# spo2 = allValues("SpO2")
+# plotHistAndBox(axs, 10, spo2, "SpO2")
 
-temperature = allValues("Temperature")
-plotHistAndBox(axs, 11, temperature, "Temperature")
+# temperature = allValues("Temperature")
+# plotHistAndBox(axs, 11, temperature, "Temperature")
 
-diurese = allValues("Diurese")
-plotHistAndBox(axs, 12, diurese, "Diurese")
+# diurese = allValues("Diurese")
+# plotHistAndBox(axs, 12, diurese, "Diurese")
 
-weight1 = allValues("Weight")
-weight2 = allValues("Weight2")
-weight = np.concatenate((weight1,weight2))
-plotHistAndBox(axs, 13, weight, "Weight")
+# weight1 = allValues("Weight")
+# weight2 = allValues("Weight2")
+# weight = np.concatenate((weight1,weight2))
+# plotHistAndBox(axs, 13, weight, "Weight")
 
-death = allValues("Death")
-plotHistAndBox(axs, 14, death, "Death")
+# death = allValues("Death")
+# plotHistAndBox(axs, 14, death, "Death")
 
 # Adjust layout
 plt.tight_layout()
