@@ -122,6 +122,6 @@ def extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withd
 
 
 def extractDeath(con, sqlPath, dataPath, encounterId):
-    dataExtracted = "Death"
+    dataExtracted = "Death2"
     params = [["encounterId",encounterId]]
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)

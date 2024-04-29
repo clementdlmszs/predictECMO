@@ -6,9 +6,13 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
-dataPath = "data/"
-preProcessedDataPath = "preProcessedData/"
-patients_df = pd.read_parquet(dataPath + "patients.parquet")
+# dataPath = "data/"
+# preProcessedDataPath = "data/preProcessedData/"
+# patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+dataPath = "dataRea/"
+preProcessedDataPath = "dataRea/preProcessedData/"
+patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
 
 nb_patients = len(patients_df)
 
