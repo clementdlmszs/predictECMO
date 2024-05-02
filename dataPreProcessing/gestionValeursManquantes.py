@@ -16,7 +16,7 @@ patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
 
 nb_patients = len(patients_df)
 
-def gestionValeursManquantes(variableStr, columnValuesStr):
+def gestionValeursManquantes(variableStr, columnValuesStr, defaultValue):
 
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
@@ -28,23 +28,36 @@ def gestionValeursManquantes(variableStr, columnValuesStr):
 
             sizeDf = df[columnValuesStr].size
 
+            # La taille des listes est fixée au nombre d'heures total du séjour (+4) 
             withdrawal_date = pd.Timestamp(row["withdrawal_date"])
             installation_date = pd.Timestamp(row["installation_date"])
             total_time_hour = (withdrawal_date - installation_date).total_seconds() / 3600 + 4
 
             liste_valeurs = []
-
+            liste_mask = [] # permet de savoir si une valeur est manquante à l'origine
+            
+            if df[columnValuesStr].isnull().all() or sizeDf == 0:
+                liste_valeurs = [defaultValue] * int(total_time_hour)
+                liste_mask = [0] * int(total_time_hour)
+                sizeDf = 0
+            
             if sizeDf > 0:
                 for i in range(int(total_time_hour)):
 
-                    if i >= sizeDf:
+                    if i >= sizeDf: # plus de valeurs existantes à partir de là
                         val_i = np.nan
                     else:
                         val_i = df[columnValuesStr][i]
 
                     if np.isnan(val_i):
+                        
+                        liste_mask.append(0) # On crée une valeur qui n'existe pas
+                        
                         j = 1
                         found = False
+                        
+                        # On associe la valeur la plus proche
+                        # En cas d'equidistance la moyenne entre les 2 valeurs les plus proches
                         while not(found):
                             if i-j < 0:
                                 while i+j < sizeDf:
@@ -81,17 +94,23 @@ def gestionValeursManquantes(variableStr, columnValuesStr):
                         liste_valeurs.append(new_val)
 
                     else:
-
+                        liste_mask.append(1) # La valeur existe
                         liste_valeurs.append(val_i)
             
 
             newdf = pd.DataFrame({columnValuesStr: liste_valeurs})
+            newdfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Mask.parquet"
+            pq.write_table(pa.Table.from_pandas(newdf), newdfPath)
 
-            newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Complet.parquet"
-            pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
+            newdfMask = pd.DataFrame({'mask': liste_mask})
+            newdfMaskPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Mask.parquet"
+            pq.write_table(pa.Table.from_pandas(newdfMask), newdfMaskPath)
 
 
-def gestionValeursManquantesPA(PA_Str, columnValuesStr):
+
+# Fonction à part pour les pressions artérielles
+# On associe d'abord la PAI si elle existe, sinon la PANI si elle existe, sinon la PAI la plus proche si elle existe, sinon la PANI la plus proche
+def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
 
     PA_I_Str = PA_Str + "_I"
     PA_NI_str = PA_Str + "_NI"
@@ -117,9 +136,14 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr):
             total_time_hour = (withdrawal_date - installation_date).total_seconds() / 3600 + 4
 
             liste_valeurs = []
+            liste_mask = [] # permet de savoir si une valeur est manquante à l'origine
 
-            if df[columnValuesStr_PAI].isnull().all():
-                if not(df2[columnValuesStr_PANI].isnull().all()):
+            if df[columnValuesStr_PAI].isnull().all() or sizeDf == 0:
+                if df2[columnValuesStr_PANI].isnull().all() or sizeDf2 == 0:
+                    liste_valeurs = [defaultValue] * int(total_time_hour)
+                    liste_mask = [0] * int(total_time_hour)
+                    sizeDf = 0
+                else:
                     df = df2
                     columnValuesStr_PAI = columnValuesStr_PANI
                     sizeDf = sizeDf2
@@ -133,12 +157,18 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr):
                         val_i = df[columnValuesStr_PAI][i]
 
                     if np.isnan(val_i):
+
                         if (i < sizeDf2) and (not(np.isnan(df2[columnValuesStr_PANI][i]))):
                             new_val = df2[columnValuesStr_PANI][i]
                             liste_valeurs.append(new_val)
+                        
                         else:
+                            
+                            liste_mask.append(0)
+
                             j = 1
                             found = False
+                            
                             while not(found):
                                 if i-j < 0:
                                     while i+j < sizeDf:
@@ -175,22 +205,25 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr):
                             liste_valeurs.append(new_val)
 
                     else:
-
+                        liste_mask.append(1)
                         liste_valeurs.append(val_i)
             
 
             newdf = pd.DataFrame({columnValuesStr: liste_valeurs})
-
             newDfPath = preProcessedDataPath + encounterId + "/" + columnValuesStr.upper() + "_Complet.parquet"
             pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
+            newdfMask = pd.DataFrame({'mask': liste_mask})
+            newdfMaskPath = preProcessedDataPath + encounterId + "/" + columnValuesStr.upper() + "_Mask.parquet"
+            pq.write_table(pa.Table.from_pandas(newdfMask), newdfMaskPath)
 
-# gestionValeursManquantes("HR", "HR")
-# gestionValeursManquantes("SpO2", "SpO2")
-gestionValeursManquantesPA("PAD", "pad")
-gestionValeursManquantesPA("PAM", "pam")
-gestionValeursManquantesPA("PAS", "pas")
-# gestionValeursManquantes("RR", "RR")
-# gestionValeursManquantes("Temperature", "temperature")
+
+gestionValeursManquantes("HR", "HR", 85)
+gestionValeursManquantes("SpO2", "SpO2", 96)
+gestionValeursManquantesPA("PAD", "pad", 60)
+gestionValeursManquantesPA("PAM", "pam", 80)
+gestionValeursManquantesPA("PAS", "pas", 125)
+gestionValeursManquantes("RR", "RR", 22)
+gestionValeursManquantes("Temperature", "temperature", 37)
 # gestionValeursManquantes("DebitECMO", "debit")
-# gestionValeursManquantes("Diurese", "diurese")
+gestionValeursManquantes("Diurese", "diurese", 0.0015)

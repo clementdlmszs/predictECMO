@@ -90,6 +90,10 @@ def extractSpO2(con, sqlPath, dataPath, encounterId, installation_date, withdraw
     params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
 
+def extractFiO2(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "FiO2"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
 
 def extractTemperature(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
     dataExtracted = "Temperature"
