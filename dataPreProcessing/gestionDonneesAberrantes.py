@@ -5,9 +5,11 @@ import matplotlib.pyplot as plt
 import pyarrow.parquet as pq
 import pyarrow as pa
 
+dataPath = "data/"
+patients_df = pd.read_parquet(dataPath + "patients.parquet")
 
-dataPath = "dataRea/"
-patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+# dataPath = "dataRea/"
+# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
 
 nb_patients = len(patients_df)
 

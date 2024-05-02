@@ -99,7 +99,7 @@ def gestionValeursManquantes(variableStr, columnValuesStr, defaultValue):
             
 
             newdf = pd.DataFrame({columnValuesStr: liste_valeurs})
-            newdfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Mask.parquet"
+            newdfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Complet.parquet"
             pq.write_table(pa.Table.from_pandas(newdf), newdfPath)
 
             newdfMask = pd.DataFrame({'mask': liste_mask})
@@ -218,12 +218,13 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
             pq.write_table(pa.Table.from_pandas(newdfMask), newdfMaskPath)
 
 
-gestionValeursManquantes("HR", "HR", 85)
-gestionValeursManquantes("SpO2", "SpO2", 96)
-gestionValeursManquantesPA("PAD", "pad", 60)
-gestionValeursManquantesPA("PAM", "pam", 80)
-gestionValeursManquantesPA("PAS", "pas", 125)
-gestionValeursManquantes("RR", "RR", 22)
-gestionValeursManquantes("Temperature", "temperature", 37)
-# gestionValeursManquantes("DebitECMO", "debit")
+# gestionValeursManquantes("HR", "HR", 85)
+# gestionValeursManquantes("SpO2", "SpO2", 96)
+# gestionValeursManquantesPA("PAD", "pad", 60)
+# gestionValeursManquantesPA("PAM", "pam", 80)
+# gestionValeursManquantesPA("PAS", "pas", 125)
+# gestionValeursManquantes("RR", "RR", 22)
+# gestionValeursManquantes("Temperature", "temperature", 37)
+# gestionValeursManquantes("DebitECMO", "debit", 3)
 gestionValeursManquantes("Diurese", "diurese", 0.0015)
+# gestionValeursManquantes("SpO2_sur_FiO2", 'SpO2_sur_FiO2', 2.5)

@@ -79,7 +79,7 @@ def gestionDiurese(h_for_avg):
         
         df = pd.read_parquet(dfPath)
         
-        weight = pd.read_parquet(preProcessedDataPath+encounterId+"/Weight3.parquet").to_numpy()[0]
+        weight = pd.read_parquet(preProcessedDataPath+encounterId+"/Weight3.parquet").to_numpy()[0][0]
 
         liste_diurese_moy = []
         liste_temps = []
@@ -104,6 +104,64 @@ def gestionDiurese(h_for_avg):
         newDfPath = preProcessedDataPath + encounterId + "/Diurese_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
+
+def gestionFiO2(frequenceAcquisition):
+    columnValuesStr_FiO2 = 'FiO2'
+    columnValuesStr_SpO2 = 'SpO2'
+    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+
+        encounterId = str(row["encounterId"])
+
+        dfPath_FiO2 = preProcessedDataPath + encounterId + "/FiO2.parquet"
+        dfPath_SpO2 = preProcessedDataPath + encounterId + "/SpO2_Moy.parquet"
+
+        df_FiO2 = pd.read_parquet(dfPath_FiO2)
+        df_SpO2 = pd.read_parquet(dfPath_SpO2)
+
+        sizeDf_FiO2 = df_FiO2[columnValuesStr_FiO2].size
+        sizeDf_SpO2 = df_SpO2[columnValuesStr_SpO2].size
+        new_index = range(sizeDf_FiO2)
+        df_FiO2.index = new_index
+
+        liste_valeurs = []
+        
+        # Test si le df est vide
+        if sizeDf_FiO2 > 0:
+            lastTime = int(df_FiO2['temps'].iloc[-1] // frequenceAcquisition)
+        else:
+            lastTime = 0
+
+        nbValeurs = df_FiO2.index.max()+1
+
+        # On calcule la valeur moyenne de la variable d'intérêt sur un intervalle de temps donné en paramètre
+        index_current_time = 0
+        for i in range(lastTime):
+            FiO2_sum = 0
+            current_time = df_FiO2['temps'][index_current_time]
+            compteur = 0
+            while (current_time < (i+1)*frequenceAcquisition) and (index_current_time < nbValeurs):
+                FiO2_sum += df_FiO2[columnValuesStr_FiO2][index_current_time] 
+
+                index_current_time += 1
+                current_time = df_FiO2['temps'][index_current_time]
+                compteur += 1
+            
+            if compteur > 0:
+                FiO2_moy = FiO2_sum/compteur
+                if i<sizeDf_SpO2 and not(np.isnan(df_SpO2[columnValuesStr_SpO2][i])):
+                    liste_valeurs.append(df_SpO2[columnValuesStr_SpO2][i]/FiO2_moy)
+                else:
+                    liste_valeurs.append(np.nan)
+            else:
+                liste_valeurs.append(np.nan)
+
+        
+        liste_temps = list(range(0,lastTime*frequenceAcquisition,frequenceAcquisition))
+
+        newdf = pd.DataFrame({'SpO2_sur_FiO2': liste_valeurs, 'temps': liste_temps})
+
+        newDfPath = preProcessedDataPath + encounterId + "/SpO2_sur_FiO2_Moy.parquet"
+        pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
 def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
@@ -156,17 +214,19 @@ def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
         newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
-gestionPoids()
-gestionTaille()
+# gestionPoids()
+# gestionTaille()
 gestionDiurese(6)
-moyenne_sur_x_minutes("HR", 60, "HR")
-moyenne_sur_x_minutes("SpO2", 60, "SpO2")
-moyenne_sur_x_minutes("PAD_I", 60, "pad_i")
-moyenne_sur_x_minutes("PAM_I", 60, "pam_i")
-moyenne_sur_x_minutes("PAS_I", 60, "pas_i")
-moyenne_sur_x_minutes("RR", 60, "RR")
-moyenne_sur_x_minutes("Temperature", 60, "temperature")
-moyenne_sur_x_minutes("DebitECMO", 60, "debit")
-moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
-moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
-moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
+# gestionFiO2(60)
+# moyenne_sur_x_minutes("HR", 60, "HR")
+# moyenne_sur_x_minutes("SpO2", 60, "SpO2")
+# moyenne_sur_x_minutes("PAD_I", 60, "pad_i")
+# moyenne_sur_x_minutes("PAM_I", 60, "pam_i")
+# moyenne_sur_x_minutes("PAS_I", 60, "pas_i")
+# moyenne_sur_x_minutes("RR", 60, "RR")
+# moyenne_sur_x_minutes("Temperature", 60, "temperature")
+# moyenne_sur_x_minutes("DebitECMO", 60, "debit")
+# moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
+# moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
+# moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
+# moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
