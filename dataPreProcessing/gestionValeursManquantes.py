@@ -226,5 +226,8 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
 # gestionValeursManquantes("RR", "RR", 22)
 # gestionValeursManquantes("Temperature", "temperature", 37)
 # gestionValeursManquantes("DebitECMO", "debit", 3)
-gestionValeursManquantes("Diurese", "diurese", 0.0015)
+# gestionValeursManquantes("Diurese", "diurese", 0.0015)
 # gestionValeursManquantes("SpO2_sur_FiO2", 'SpO2_sur_FiO2', 2.5)
+
+
+# gestionValeursManquantes("FiO2", "FiO2", 40) # Facultatif

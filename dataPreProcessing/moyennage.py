@@ -6,17 +6,6 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
-# dataPath = "data/"
-# preProcessedDataPath = "data/preProcessedData/"
-# patients_df = pd.read_parquet(dataPath + "patients.parquet")
-
-dataPath = "dataRea/"
-preProcessedDataPath = "dataRea/preProcessedData/"
-patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
-
-nb_patients = len(patients_df)
-
-
 def gestionPoids():
     
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
@@ -33,7 +22,7 @@ def gestionPoids():
         numeric_values2 = pd.to_numeric(df2.iloc[:, 0], errors='coerce').dropna()
 
         if df.size == 0 and df2.size == 0:
-            meanWeight = 80
+            meanWeight = 80.0001
         elif df.size == 0:
             meanWeight = np.mean(numeric_values2)
         elif df2.size == 0:
@@ -60,7 +49,7 @@ def gestionTaille():
         numeric_values = pd.to_numeric(df.iloc[:, 0], errors='coerce').dropna()
 
         if df.size == 0:
-            meanHeight = 175
+            meanHeight = 171.0001
         else:
             meanHeight = np.mean(numeric_values)
         
@@ -68,6 +57,29 @@ def gestionTaille():
 
         newDfPath = preProcessedDataPath + encounterId + "/Height_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
+
+
+def gestionIMC():
+    
+    # gestionPoids()
+    # gestionTaille()
+
+    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+
+        encounterId = str(row["encounterId"])
+
+        dfPath_height = preProcessedDataPath + encounterId + "/Height_Moy.parquet"
+        height = pd.read_parquet(dfPath_height).iloc[0][0]
+
+        dfPath_weight = preProcessedDataPath + encounterId + "/Weight3.parquet"
+        weight = pd.read_parquet(dfPath_weight).iloc[0][0]
+
+        imc = weight / ((height/100)**2)
+
+        newdf = pd.DataFrame([imc])
+        newDfPath = preProcessedDataPath + encounterId + "/IMC.parquet"
+        pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
+
 
 def gestionDiurese(h_for_avg):
     
@@ -214,9 +226,24 @@ def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
         newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
+
+
+dataPath = "data/"
+preProcessedDataPath = "data/preProcessedData/"
+patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+# dataPath = "dataRea/"
+# preProcessedDataPath = "dataRea/preProcessedData/"
+# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+
+nb_patients = len(patients_df)
+
+
+
 # gestionPoids()
-# gestionTaille()
-gestionDiurese(6)
+gestionTaille()
+gestionIMC()
+# gestionDiurese(6)
 # gestionFiO2(60)
 # moyenne_sur_x_minutes("HR", 60, "HR")
 # moyenne_sur_x_minutes("SpO2", 60, "SpO2")
@@ -230,3 +257,5 @@ gestionDiurese(6)
 # moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
 # moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
 # moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
+
+# moyenne_sur_x_minutes("FiO2", 60, 'FiO2') # Facultatif
