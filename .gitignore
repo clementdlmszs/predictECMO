@@ -4,6 +4,7 @@ dataMimic/
 tests/
 MIMIC_PreProcessing/
 *.ipynb
+!models/classicML.ipynb
 *.csv
 *.parquet
 .vscode

@@ -6,15 +6,6 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 from datetime import datetime
 
-# dataPath = "data/"
-# preProcessedDataPath = "data/preProcessedData/"
-# patients_df = pd.read_parquet(dataPath + "patients.parquet")
-
-dataPath = "dataRea/"
-preProcessedDataPath = "dataRea/preProcessedData/"
-patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
-
-nb_patients = len(patients_df)
 
 def gestionValeursManquantes(variableStr, columnValuesStr, defaultValue):
 
@@ -161,6 +152,7 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
                         if (i < sizeDf2) and (not(np.isnan(df2[columnValuesStr_PANI][i]))):
                             new_val = df2[columnValuesStr_PANI][i]
                             liste_valeurs.append(new_val)
+                            liste_mask.append(1)
                         
                         else:
                             
@@ -218,11 +210,22 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
             pq.write_table(pa.Table.from_pandas(newdfMask), newdfMaskPath)
 
 
+dataPath = "data/"
+preProcessedDataPath = "data/preProcessedData/"
+patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+# dataPath = "dataRea/"
+# preProcessedDataPath = "dataRea/preProcessedData/"
+# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+
+nb_patients = len(patients_df)
+
+
 # gestionValeursManquantes("HR", "HR", 85)
 # gestionValeursManquantes("SpO2", "SpO2", 96)
-# gestionValeursManquantesPA("PAD", "pad", 60)
-# gestionValeursManquantesPA("PAM", "pam", 80)
-# gestionValeursManquantesPA("PAS", "pas", 125)
+gestionValeursManquantesPA("PAD", "pad", 60)
+gestionValeursManquantesPA("PAM", "pam", 80)
+gestionValeursManquantesPA("PAS", "pas", 125)
 # gestionValeursManquantes("RR", "RR", 22)
 # gestionValeursManquantes("Temperature", "temperature", 37)
 # gestionValeursManquantes("DebitECMO", "debit", 3)

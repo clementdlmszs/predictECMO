@@ -42,6 +42,36 @@ def regroupement(listeVar, dataGroup):
         pq.write_table(pa.Table.from_pandas(df_final), df_final_Path)
 
 
+def regroupement_mask(listeVar, dataGroup):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+        patients_df = pd.read_parquet(dataPath + "patients.parquet")
+    else:
+        dataPath = "dataRea/"
+        patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    finalDataPath = dataPath + "finalData/"
+
+    nb_patients = len(patients_df)
+
+    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+
+        encounterId = str(row["encounterId"])
+
+        df_final = pd.DataFrame()
+        
+        for variableStr in listeVar:
+
+            dfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Mask" + ".parquet"
+            df = pd.read_parquet(dfPath)
+            df_final[variableStr] = df
+
+        df_final_Path = finalDataPath + encounterId + "/mask.parquet"
+        pq.write_table(pa.Table.from_pandas(df_final), df_final_Path)
+
+
 def regroupement_static(dataGroup):
     
     if dataGroup == "dataECMO":
@@ -90,5 +120,6 @@ if dataGroup == "dataRea":
 else:
     listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]
 
-#regroupement(listeVar, dataGroup)
-regroupement_static(dataGroup)
+# regroupement(listeVar, dataGroup)
+regroupement_mask(listeVar, dataGroup)
+# regroupement_static(dataGroup)

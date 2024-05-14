@@ -5,20 +5,6 @@ import matplotlib.pyplot as plt
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-dataGroup = "dataECMO"
-# dataGroup = "dataRea"
-
-if dataGroup == "dataECMO":
-    dataPath = "data/"
-    patients_df = pd.read_parquet(dataPath + "patients.parquet")
-else:
-    dataPath = "dataRea/"
-    patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
-
-nb_patients = len(patients_df)
-
-rawDataPath = "rawData/"
-preProcessedDataPath = "preProcessedData/"
 
 def allValues(variableStr):
 
@@ -56,6 +42,20 @@ def exportStats(listeVar):
     df_stats_Path = dataPath + "stats.parquet"
     pq.write_table(pa.Table.from_pandas(df_stats), df_stats_Path)
 
+# dataGroup = "dataECMO"
+dataGroup = "dataRea"
+
+if dataGroup == "dataECMO":
+    dataPath = "data/"
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+else:
+    dataPath = "dataRea/"
+    patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+
+nb_patients = len(patients_df)
+
+rawDataPath = "rawData/"
+preProcessedDataPath = "preProcessedData/"
 
 if dataGroup == "dataRea":
     listeVar = ["HR", "SpO2", "PAD_I", "PAM_I", "PAS_I", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2"]
