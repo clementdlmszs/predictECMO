@@ -5,14 +5,6 @@ import matplotlib.pyplot as plt
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-dataPath = "data/"
-patients_df = pd.read_parquet(dataPath + "patients.parquet")
-
-# dataPath = "dataRea/"
-# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
-
-nb_patients = len(patients_df)
-
 
 def gestionDonneesAberrantes(variableStr, minTheorique, maxTheorique, columnStr):
     
@@ -30,6 +22,14 @@ def gestionDonneesAberrantes(variableStr, minTheorique, maxTheorique, columnStr)
         newDfPath = dataPath + "preProcessedData/" + encounterId + "/" + variableStr + ".parquet"
         pq.write_table(pa.Table.from_pandas(df_filtered), newDfPath)
 
+
+dataPath = "data/"
+patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+# dataPath = "dataRea/"
+# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+
+nb_patients = len(patients_df)
 
 # gestionDonneesAberrantes("HR", 20, 200, 'HR')
 # gestionDonneesAberrantes("SpO2", 50, 100, 'SpO2')

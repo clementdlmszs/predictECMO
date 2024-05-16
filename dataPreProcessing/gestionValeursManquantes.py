@@ -223,9 +223,9 @@ nb_patients = len(patients_df)
 
 # gestionValeursManquantes("HR", "HR", 85)
 # gestionValeursManquantes("SpO2", "SpO2", 96)
-gestionValeursManquantesPA("PAD", "pad", 60)
-gestionValeursManquantesPA("PAM", "pam", 80)
-gestionValeursManquantesPA("PAS", "pas", 125)
+# gestionValeursManquantesPA("PAD", "pad", 60)
+# gestionValeursManquantesPA("PAM", "pam", 80)
+# gestionValeursManquantesPA("PAS", "pas", 125)
 # gestionValeursManquantes("RR", "RR", 22)
 # gestionValeursManquantes("Temperature", "temperature", 37)
 # gestionValeursManquantes("DebitECMO", "debit", 3)
@@ -233,4 +233,4 @@ gestionValeursManquantesPA("PAS", "pas", 125)
 # gestionValeursManquantes("SpO2_sur_FiO2", 'SpO2_sur_FiO2', 2.5)
 
 
-# gestionValeursManquantes("FiO2", "FiO2", 40) # Facultatif
+gestionValeursManquantes("FiO2", "FiO2", 40) # Facultatif

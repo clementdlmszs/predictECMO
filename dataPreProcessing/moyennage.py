@@ -241,8 +241,8 @@ nb_patients = len(patients_df)
 
 
 # gestionPoids()
-gestionTaille()
-gestionIMC()
+# gestionTaille()
+# gestionIMC()
 # gestionDiurese(6)
 # gestionFiO2(60)
 # moyenne_sur_x_minutes("HR", 60, "HR")
@@ -258,4 +258,4 @@ gestionIMC()
 # moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
 # moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
 
-# moyenne_sur_x_minutes("FiO2", 60, 'FiO2') # Facultatif
+moyenne_sur_x_minutes("FiO2", 60, 'FiO2') # Facultatif
