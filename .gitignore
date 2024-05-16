@@ -5,6 +5,7 @@ tests/
 MIMIC_PreProcessing/
 *.ipynb
 !models/classicML.ipynb
+!models/simpleDL.ipynb
 *.csv
 *.parquet
 .vscode
