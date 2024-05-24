@@ -7,7 +7,17 @@ import pyarrow as pa
 from datetime import datetime
 
 
-def gestionValeursManquantes(variableStr, columnValuesStr, defaultValue):
+def gestionValeursManquantes(dataGroup, variableStr, columnValuesStr, defaultValue):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
 
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
@@ -101,7 +111,17 @@ def gestionValeursManquantes(variableStr, columnValuesStr, defaultValue):
 
 # Fonction à part pour les pressions artérielles
 # On associe d'abord la PAI si elle existe, sinon la PANI si elle existe, sinon la PAI la plus proche si elle existe, sinon la PANI la plus proche
-def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
+def gestionValeursManquantesPA(dataGroup, PA_Str, columnValuesStr, defaultValue):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
 
     PA_I_Str = PA_Str + "_I"
     PA_NI_str = PA_Str + "_NI"
@@ -210,27 +230,17 @@ def gestionValeursManquantesPA(PA_Str, columnValuesStr, defaultValue):
             pq.write_table(pa.Table.from_pandas(newdfMask), newdfMaskPath)
 
 
-dataPath = "data/"
-preProcessedDataPath = "data/preProcessedData/"
-patients_df = pd.read_parquet(dataPath + "patients.parquet")
 
-# dataPath = "dataRea/"
-# preProcessedDataPath = "dataRea/preProcessedData/"
-# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+# gestionValeursManquantes(dataGroup, "HR", "HR", 85)
+# gestionValeursManquantes(dataGroup, "SpO2", "SpO2", 96)
+# gestionValeursManquantesPA(dataGroup, "PAD", "pad", 60)
+# gestionValeursManquantesPA(dataGroup, "PAM", "pam", 80)
+# gestionValeursManquantesPA(dataGroup, "PAS", "pas", 125)
+# gestionValeursManquantes(dataGroup, "RR", "RR", 22)
+# gestionValeursManquantes(dataGroup, "Temperature", "temperature", 37)
+# gestionValeursManquantes(dataGroup, "Diurese", "diurese", 0.0015)
+# gestionValeursManquantes(dataGroup, "SpO2_sur_FiO2", 'SpO2_sur_FiO2', 2.5)
 
-nb_patients = len(patients_df)
+# gestionValeursManquantes(dataGroup, "DebitECMO", "debit", 3)
 
-
-# gestionValeursManquantes("HR", "HR", 85)
-# gestionValeursManquantes("SpO2", "SpO2", 96)
-# gestionValeursManquantesPA("PAD", "pad", 60)
-# gestionValeursManquantesPA("PAM", "pam", 80)
-# gestionValeursManquantesPA("PAS", "pas", 125)
-# gestionValeursManquantes("RR", "RR", 22)
-# gestionValeursManquantes("Temperature", "temperature", 37)
-# gestionValeursManquantes("DebitECMO", "debit", 3)
-# gestionValeursManquantes("Diurese", "diurese", 0.0015)
-# gestionValeursManquantes("SpO2_sur_FiO2", 'SpO2_sur_FiO2', 2.5)
-
-
-gestionValeursManquantes("FiO2", "FiO2", 40) # Facultatif
+# gestionValeursManquantes(dataGroup, "FiO2", "FiO2", 40) # Facultatif

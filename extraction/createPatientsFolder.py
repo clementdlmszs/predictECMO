@@ -2,10 +2,9 @@ import pandas as pd
 import os
 
 dataPath = "dataRea/"
-filePatients = "patientsRea.parquet"
-
 # dataPath = "data/"
-# filePatients = "patients.parquet"
+
+filePatients = "patients.parquet"
 
 patients_df = pd.read_parquet(dataPath + filePatients)
 

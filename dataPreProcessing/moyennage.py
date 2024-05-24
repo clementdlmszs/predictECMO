@@ -6,7 +6,17 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
-def gestionPoids():
+def gestionPoids(dataGroup):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
     
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
@@ -37,8 +47,19 @@ def gestionPoids():
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def gestionTaille():
-     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+def gestionTaille(dataGroup):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
+    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
         encounterId = str(row["encounterId"])
 
@@ -59,10 +80,20 @@ def gestionTaille():
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def gestionIMC():
+def gestionIMC(dataGroup):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
     
-    # gestionPoids()
-    # gestionTaille()
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
+    gestionPoids(dataGroup)
+    gestionTaille(dataGroup)
 
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
@@ -81,8 +112,18 @@ def gestionIMC():
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def gestionDiurese(h_for_avg):
+def gestionDiurese(dataGroup, h_for_avg):
     
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+        
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
         encounterId = str(row["encounterId"])
@@ -117,9 +158,21 @@ def gestionDiurese(h_for_avg):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def gestionFiO2(frequenceAcquisition):
+def gestionFiO2(dataGroup, frequenceAcquisition):
+
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
     columnValuesStr_FiO2 = 'FiO2'
     columnValuesStr_SpO2 = 'SpO2'
+
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
         encounterId = str(row["encounterId"])
@@ -176,8 +229,18 @@ def gestionFiO2(frequenceAcquisition):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
+def moyenne_sur_x_minutes(dataGroup, variableStr, frequenceAcquisition, columnValuesStr):
     
+    if dataGroup == "dataECMO":
+        dataPath = "data/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
     for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
 
         encounterId = str(row["encounterId"])
@@ -228,34 +291,20 @@ def moyenne_sur_x_minutes(variableStr, frequenceAcquisition, columnValuesStr):
 
 
 
-dataPath = "data/"
-preProcessedDataPath = "data/preProcessedData/"
-patients_df = pd.read_parquet(dataPath + "patients.parquet")
+# gestionIMC(dataGroup)
+# gestionDiurese(dataGroup, 6)
+# moyenne_sur_x_minutes(dataGroup, "HR", 60, "HR")
+# moyenne_sur_x_minutes(dataGroup, "SpO2", 60, "SpO2")
+# moyenne_sur_x_minutes(dataGroup, "PAD_I", 60, "pad_i")
+# moyenne_sur_x_minutes(dataGroup, "PAM_I", 60, "pam_i")
+# moyenne_sur_x_minutes(dataGroup, "PAS_I", 60, "pas_i")
+# moyenne_sur_x_minutes(dataGroup, "RR", 60, "RR")
+# moyenne_sur_x_minutes(dataGroup, "Temperature", 60, "temperature")
+# moyenne_sur_x_minutes(dataGroup, "DebitECMO", 60, "debit")
+# moyenne_sur_x_minutes(dataGroup, "PAD_NI", 60, 'pad_ni')
+# moyenne_sur_x_minutes(dataGroup, "PAM_NI", 60, 'pam_ni')
+# moyenne_sur_x_minutes(dataGroup, "PAS_NI", 60, 'pas_ni')
+# moyenne_sur_x_minutes(dataGroup, "PAS_NI", 60, 'pas_ni')
+# gestionFiO2(dataGroup, 60)
 
-# dataPath = "dataRea/"
-# preProcessedDataPath = "dataRea/preProcessedData/"
-# patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
-
-nb_patients = len(patients_df)
-
-
-
-# gestionPoids()
-# gestionTaille()
-# gestionIMC()
-# gestionDiurese(6)
-# gestionFiO2(60)
-# moyenne_sur_x_minutes("HR", 60, "HR")
-# moyenne_sur_x_minutes("SpO2", 60, "SpO2")
-# moyenne_sur_x_minutes("PAD_I", 60, "pad_i")
-# moyenne_sur_x_minutes("PAM_I", 60, "pam_i")
-# moyenne_sur_x_minutes("PAS_I", 60, "pas_i")
-# moyenne_sur_x_minutes("RR", 60, "RR")
-# moyenne_sur_x_minutes("Temperature", 60, "temperature")
-# moyenne_sur_x_minutes("DebitECMO", 60, "debit")
-# moyenne_sur_x_minutes("PAD_NI", 60, 'pad_ni')
-# moyenne_sur_x_minutes("PAM_NI", 60, 'pam_ni')
-# moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
-# moyenne_sur_x_minutes("PAS_NI", 60, 'pas_ni')
-
-moyenne_sur_x_minutes("FiO2", 60, 'FiO2') # Facultatif
+# moyenne_sur_x_minutes(dataGroup, "FiO2", 60, 'FiO2') # Facultatif
