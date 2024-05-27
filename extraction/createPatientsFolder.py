@@ -1,8 +1,8 @@
 import pandas as pd
 import os
 
-dataPath = "dataRea/"
-# dataPath = "data/"
+# dataPath = "dataRea/"
+dataPath = "dataECMO/"
 
 filePatients = "patients.parquet"
 

@@ -11,8 +11,8 @@ engine = create_engine('mssql+pymssql://@' + SERVER + '/' + DATABASE)
 
 sqlPath = "extraction/scriptsSQL/"
 
-# dataPath = "data/"
-dataPath = "dataRea/"
+dataPath = "dataECMO/"
+# dataPath = "dataRea/"
 
 filePatients = "patients.parquet"
 
@@ -28,8 +28,7 @@ with engine.connect() as con:
         installation_date = row["installation_date"]
         withdrawal_date = row["withdrawal_date"]
 
-        # extractDebitECMO(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        # extractCOVID(con, sqlPath, dataPath, encounterId)
+        extractDebitECMO(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
         extractHR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
         extractPAD_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
         extractPAD_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)

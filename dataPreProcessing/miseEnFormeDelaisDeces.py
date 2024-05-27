@@ -9,12 +9,12 @@ import pyarrow as pa
 def delai_deces(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
         patients_df = pd.read_parquet(dataPath + "patients.parquet")
         deces_df = pd.read_csv(dataPath + "patientsECMO_IPP_deces.csv")
     else:
         dataPath = "dataRea/"
-        patients_df = pd.read_parquet(dataPath + "patientsRea.parquet")
+        patients_df = pd.read_parquet(dataPath + "patients.parquet")
         deces_df = pd.read_csv(dataPath + "patientsIPP_ReaRangueil_deces.csv")
 
     nb_patients = len(patients_df)

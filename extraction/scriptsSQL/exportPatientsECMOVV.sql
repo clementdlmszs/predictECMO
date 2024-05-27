@@ -1,5 +1,25 @@
+WITH entree_et_sortie AS 
+(
+	SELECT
+		encounterId,
+		MIN(intime) as entree,
+		MAX(outTime) as sortie
+	FROM 
+		CISReportingDB.dbo.ptCensus
+	GROUP BY encounterId
+)
 SELECT
-	*
+	P2.encounterId,
+	P2.patientLifetimeNumber,
+    P2.patientEncounterNumber,
+    P2.patientFullName,
+    P2.patientAge,
+    P2.patientGender,
+    P2.patientDateOfBirth,
+    P2.installation_date,
+    P2.withdrawal_date,
+    entree,
+    sortie
 FROM 
 (
 	SELECT
@@ -27,6 +47,7 @@ FROM
 	    patientFullName,
 	    patientDateOfBirth 
 ) P2
+LEFT JOIN entree_et_sortie ON P2.encounterId = entree_et_sortie.encounterId
 WHERE 
 	DATEDIFF(   
 				HH,
@@ -37,7 +58,7 @@ WHERE
 	(SELECT 
 	    CASE 
 	        WHEN
-	            COUNT(case verboseForm when 'Veino-artérielle' then 1 else null end) >= COUNT(case verboseForm when 'Veino-veineuse' then 1 else null end)
+	            COUNT(case when verboseForm LIKE 'Veino-art%rielle' then 1 else null end) >= COUNT(case when verboseForm LIKE 'Veino-veineuse' then 1 else null end)
 	        THEN 
 	            1
 	        ELSE
@@ -45,11 +66,12 @@ WHERE
 	    END
 	    AS ecmo_type
 	FROM 
-	    CISReportingDB.dar.PatientAssessment
+	    CISReportingDB.dar.PatientAssessment PA
 	WHERE 
-		chartTime BETWEEN P2.installation_date AND DATEADD(HOUR, 4, P2.withdrawal_date)
-	    AND clinicalUnitId = 3
+	    clinicalUnitId = 3
 	    AND attributeId = 5027
+	    AND PA.encounterId = P2.encounterId
+	    AND chartTime BETWEEN P2.installation_date AND DATEADD(HOUR, 4, P2.withdrawal_date)
 	) = 0
 ORDER BY
-	encounterId
+	P2.encounterId

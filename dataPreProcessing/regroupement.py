@@ -9,7 +9,7 @@ import pyarrow as pa
 def regroupement(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
         listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]    
     else:
         dataPath = "dataRea/"
@@ -51,7 +51,7 @@ def regroupement(dataGroup):
 def regroupement_mask(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
         listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]    
     else:
         dataPath = "dataRea/"
@@ -83,7 +83,7 @@ def regroupement_mask(dataGroup):
 def regroupement_static(dataGroup):
     
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
         

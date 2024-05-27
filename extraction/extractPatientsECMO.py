@@ -8,7 +8,7 @@ DATABASE = 'CisReportingActiveDB0'
 engine = create_engine('mssql+pymssql://@' + SERVER + '/' + DATABASE)
 
 sqlFile = "extraction/scriptsSQL/exportPatientsECMOVV.sql"
-destinationFile = "data/patients.parquet"
+destinationFile = "dataECMO/patients.parquet"
 
 with engine.connect() as con:
     with open(sqlFile) as file:

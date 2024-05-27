@@ -10,7 +10,7 @@ from datetime import datetime
 def gestionValeursManquantes(dataGroup, variableStr, columnValuesStr, defaultValue):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     
@@ -114,7 +114,7 @@ def gestionValeursManquantes(dataGroup, variableStr, columnValuesStr, defaultVal
 def gestionValeursManquantesPA(dataGroup, PA_Str, columnValuesStr, defaultValue):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     

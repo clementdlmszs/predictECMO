@@ -26,7 +26,7 @@ def allValues(variableStr, dataPath, preProcessedDataPath, patients_df):
 def exportStats(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     

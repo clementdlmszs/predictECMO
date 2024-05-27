@@ -9,7 +9,7 @@ import pyarrow as pa
 def gestionPoids(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     
@@ -50,7 +50,7 @@ def gestionPoids(dataGroup):
 def gestionTaille(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     
@@ -83,7 +83,7 @@ def gestionTaille(dataGroup):
 def gestionIMC(dataGroup):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     
@@ -115,7 +115,7 @@ def gestionIMC(dataGroup):
 def gestionDiurese(dataGroup, h_for_avg):
     
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
         
@@ -161,7 +161,7 @@ def gestionDiurese(dataGroup, h_for_avg):
 def gestionFiO2(dataGroup, frequenceAcquisition):
 
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     
@@ -232,7 +232,7 @@ def gestionFiO2(dataGroup, frequenceAcquisition):
 def moyenne_sur_x_minutes(dataGroup, variableStr, frequenceAcquisition, columnValuesStr):
     
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
     

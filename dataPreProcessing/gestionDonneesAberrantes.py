@@ -9,7 +9,7 @@ import pyarrow as pa
 def gestionDonneesAberrantes(dataGroup, variableStr, minTheorique, maxTheorique, columnStr):
     
     if dataGroup == "dataECMO":
-        dataPath = "data/"
+        dataPath = "dataECMO/"
     else:
         dataPath = "dataRea/"
         

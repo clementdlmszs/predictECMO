@@ -31,12 +31,6 @@ def extractDebitECMO(con, sqlPath, dataPath, encounterId, installation_date, wit
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
 
 
-def extractCOVID(con, sqlPath, dataPath, encounterId):
-    dataExtracted = "COVID"
-    params = [["encounterId",encounterId]]
-    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
-
-
 def extractHR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
     dataExtracted = "HR"
     params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
