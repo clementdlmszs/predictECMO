@@ -123,3 +123,21 @@ def extractDeath(con, sqlPath, dataPath, encounterId):
     dataExtracted = "Death2"
     params = [["encounterId",encounterId]]
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractIGS(con, sqlPath, dataPath, encounterId):
+    
+    sqlFile = sqlPath + "extractIGS.sql"
+    dataFile = dataPath.split("/")[0] + "/finalData/" + str(encounterId) + "/IGS.parquet"
+
+    with open(sqlFile) as file:
+        query = text(file.read())
+        
+        query = query.bindparams(**{"encounterId": encounterId})
+
+        result = con.execute(query)
+
+        df = pd.DataFrame(result.fetchall(), columns=result.keys())
+        df.to_parquet(dataFile, index=False)
+    
+    return result

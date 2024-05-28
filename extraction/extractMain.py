@@ -11,8 +11,8 @@ engine = create_engine('mssql+pymssql://@' + SERVER + '/' + DATABASE)
 
 sqlPath = "extraction/scriptsSQL/"
 
-dataPath = "dataECMO/"
-# dataPath = "dataRea/"
+# dataPath = "dataECMO/"
+dataPath = "dataRea/"
 
 filePatients = "patients.parquet"
 
@@ -28,21 +28,22 @@ with engine.connect() as con:
         installation_date = row["installation_date"]
         withdrawal_date = row["withdrawal_date"]
 
-        extractDebitECMO(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractHR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAD_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAD_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAM_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAM_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAS_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractPAS_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractRR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractSpO2(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractFiO2(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractTemperature(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
-        extractWeight(con, sqlPath, dataPath, encounterId, installation_date)
-        extractWeight2(con, sqlPath, dataPath, encounterId, installation_date)
-        extractHeight(con, sqlPath, dataPath, encounterId, installation_date)
-        extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractDebitECMO(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractHR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAD_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAD_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAM_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAM_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAS_I(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractPAS_NI(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractRR(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractSpO2(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractFiO2(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractTemperature(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        # extractWeight(con, sqlPath, dataPath, encounterId, installation_date)
+        # extractWeight2(con, sqlPath, dataPath, encounterId, installation_date)
+        # extractHeight(con, sqlPath, dataPath, encounterId, installation_date)
+        # extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
         # extractDeath(con, sqlPath, dataPath, encounterId)
+        extractIGS(con, sqlPath, dataPath, encounterId)
 
