@@ -17,3 +17,4 @@ WHERE
 			   	    					  	mce.encounterId = :encounterId
 			   	    					  )
 			    )
+ORDER BY igsStoreTime 
