@@ -1,11 +1,15 @@
 dataECMO/
 dataRea/
+Mimic/
 dataMimic/
 tests/
+models/saved_models/
 MIMIC_PreProcessing/
 *.ipynb
 !models/classicML.ipynb
 !models/simpleDL.ipynb
+!models/inceptionTime.ipynb
+!models/HC2.ipynb
 *.csv
 *.parquet
 .vscode

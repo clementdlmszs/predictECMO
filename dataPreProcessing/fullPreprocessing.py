@@ -86,11 +86,11 @@ def regroupementFull(dataGroup):
     regroupement_static(dataGroup)
 
 
-dataGroup = "dataECMO"
-# dataGroup = "dataRea"
+# dataGroup = "dataECMO"
+dataGroup = "dataRea"
 
-gestionDonneesAberrantesFull(dataGroup)
-moyennageFull(dataGroup)
-gestionValeursManquantesFull(dataGroup)
+# gestionDonneesAberrantesFull(dataGroup)
+# moyennageFull(dataGroup)
+# gestionValeursManquantesFull(dataGroup)
 exportStatsFull(dataGroup)
 regroupementFull(dataGroup)
