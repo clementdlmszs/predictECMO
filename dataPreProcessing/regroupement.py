@@ -10,10 +10,10 @@ def regroupement(dataGroup):
 
     if dataGroup == "dataECMO":
         dataPath = "dataECMO/"
-        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]    
+        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2", "DebitECMO"]    
     else:
         dataPath = "dataRea/"
-        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2"]
+        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2"]
 
     patients_df = pd.read_parquet(dataPath + "patients.parquet")
     
@@ -52,10 +52,10 @@ def regroupement_mask(dataGroup):
 
     if dataGroup == "dataECMO":
         dataPath = "dataECMO/"
-        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]    
+        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2", "DebitECMO"]    
     else:
         dataPath = "dataRea/"
-        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2"]
+        listeVar = ["HR", "SpO2", "PAD", "PAM", "PAS", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2"]
     
     patients_df = pd.read_parquet(dataPath + "patients.parquet")
 

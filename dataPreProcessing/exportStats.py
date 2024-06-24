@@ -38,9 +38,9 @@ def exportStats(dataGroup):
     preProcessedDataPath = "preProcessedData/"
 
     if dataGroup == "dataRea":
-        listeVar = ["HR", "SpO2", "PAD_I", "PAM_I", "PAS_I", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2"]
+        listeVar = ["HR", "SpO2", "PAD_I", "PAM_I", "PAS_I", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2"]
     else:
-        listeVar = ["HR", "SpO2", "PAD_I", "PAM_I", "PAS_I", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "DebitECMO"]
+        listeVar = ["HR", "SpO2", "PAD_I", "PAM_I", "PAS_I", "RR", "Temperature", "Diurese", "SpO2_sur_FiO2", "FiO2", "DebitECMO"]
     
     df_stats = pd.DataFrame()
     
