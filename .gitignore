@@ -6,6 +6,8 @@ MIMIC_PreProcessing/
 *.ipynb
 !models/classicML.ipynb
 !models/simpleDL.ipynb
+!models/inceptionTime.ipynb
+!models/HC2.ipynb
 *.csv
 *.parquet
 .vscode
