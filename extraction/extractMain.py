@@ -11,8 +11,8 @@ engine = create_engine('mssql+pymssql://@' + SERVER + '/' + DATABASE)
 
 sqlPath = "extraction/scriptsSQL/"
 
-# dataPath = "dataECMO/"
-dataPath = "dataRea/"
+dataPath = "dataECMO/"
+# dataPath = "dataRea/"
 
 filePatients = "patients.parquet"
 
@@ -44,6 +44,10 @@ with engine.connect() as con:
         # extractWeight2(con, sqlPath, dataPath, encounterId, installation_date)
         # extractHeight(con, sqlPath, dataPath, encounterId, installation_date)
         # extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        extractCompliance(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        extractVolumeCourant(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        extractPplat(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
+        extractPEP(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date)
         # extractDeath(con, sqlPath, dataPath, encounterId)
-        extractIGS(con, sqlPath, dataPath, encounterId)
+        # extractIGS(con, sqlPath, dataPath, encounterId)
 

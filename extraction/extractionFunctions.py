@@ -119,6 +119,30 @@ def extractDiurese(con, sqlPath, dataPath, encounterId, installation_date, withd
     genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
 
 
+def extractCompliance(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "Compliance"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractVolumeCourant(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "VolumeCourant"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractPplat(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "Pplat"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
+def extractPEP(con, sqlPath, dataPath, encounterId, installation_date, withdrawal_date):
+    dataExtracted = "PEP"
+    params = [["encounterId",encounterId],["installation_date",installation_date],["withdrawal_date", withdrawal_date]]
+    genericExtract(con, dataExtracted, sqlPath, dataPath, params, encounterId)
+
+
 def extractDeath(con, sqlPath, dataPath, encounterId):
     dataExtracted = "Death2"
     params = [["encounterId",encounterId]]
