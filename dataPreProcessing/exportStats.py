@@ -6,6 +6,7 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
+# concatène toutes les valeurs d'une variable
 def allValues(variableStr, dataPath, preProcessedDataPath, patients_df):
 
     nb_patients = len(patients_df)
@@ -23,6 +24,8 @@ def allValues(variableStr, dataPath, preProcessedDataPath, patients_df):
 
     return tabValues
 
+
+# création d'un fichier avec la moyenne, l'écart-type, le minimum, le maximum des variables d'un groupe de patient
 def exportStats(dataGroup):
 
     if dataGroup == "dataECMO":

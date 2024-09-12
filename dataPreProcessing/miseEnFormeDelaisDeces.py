@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-
+# Création d'un fichier avec les délais entre l'installation/retrait/sortie et le décès des patients
 def delai_deces(dataGroup):
 
     if dataGroup == "dataECMO":

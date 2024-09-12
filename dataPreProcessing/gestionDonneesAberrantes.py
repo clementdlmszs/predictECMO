@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pyarrow.parquet as pq
 import pyarrow as pa
 
-
+# On garde les valeurs qui sont entre un minimum et un maximum donnés en paramètre
 def gestionDonneesAberrantes(dataGroup, variableStr, minTheorique, maxTheorique, columnStr):
     
     if dataGroup == "dataECMO":

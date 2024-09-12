@@ -6,6 +6,70 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 
 
+# Moyennage de la série temporelle sur un intervalle donné en paramètre (frequenceAcquisition (=60 pour moyenner par heure))
+def moyenne_sur_x_minutes(dataGroup, variableStr, frequenceAcquisition, columnValuesStr):
+    
+    if dataGroup == "dataECMO":
+        dataPath = "dataECMO/"
+    else:
+        dataPath = "dataRea/"
+    
+    patients_df = pd.read_parquet(dataPath + "patients.parquet")
+
+    preProcessedDataPath = dataPath + "preProcessedData/"
+    nb_patients = len(patients_df)
+
+    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
+
+        encounterId = str(row["encounterId"])
+
+        dfPath = preProcessedDataPath + encounterId + "/" + variableStr + ".parquet"
+        
+        df = pd.read_parquet(dfPath)
+
+        sizeDf = df[columnValuesStr].size
+        new_index = range(sizeDf)
+        df.index = new_index
+
+        liste_valeurs = []
+        
+        # Test si le df est vide
+        if sizeDf > 0:
+            lastTime = int(df['temps'].iloc[-1] // frequenceAcquisition)
+        else:
+            lastTime = 0
+
+        nbValeurs = df.index.max()+1
+
+        # On calcule la valeur moyenne de la variable d'intérêt sur un intervalle de temps donné en paramètre
+        index_current_time = 0
+        for i in range(lastTime):
+            valeur_moy = 0
+            current_time = df['temps'][index_current_time]
+            compteur = 0
+            while (current_time < (i+1)*frequenceAcquisition) and (index_current_time < nbValeurs):
+                valeur_moy += df[columnValuesStr][index_current_time] 
+
+                index_current_time += 1
+                current_time = df['temps'][index_current_time]
+                compteur += 1
+            
+            if compteur > 0:
+                liste_valeurs.append(valeur_moy/compteur)
+            else:
+                liste_valeurs.append(np.nan)
+
+        
+        liste_temps = list(range(0,lastTime*frequenceAcquisition,frequenceAcquisition))
+
+        newdf = pd.DataFrame({columnValuesStr: liste_valeurs, 'temps': liste_temps})
+
+        newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Moy.parquet"
+        pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
+
+
+
+# Création de la variable poids du patient (moyennage des différents poids)
 def gestionPoids(dataGroup):
 
     if dataGroup == "dataECMO":
@@ -47,6 +111,7 @@ def gestionPoids(dataGroup):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
+# Création de la variable taille du patient (moyennage des différentes tailles)
 def gestionTaille(dataGroup):
 
     if dataGroup == "dataECMO":
@@ -80,6 +145,7 @@ def gestionTaille(dataGroup):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
+# Utilisation du poids et de la taille moyens pour calculer l'IMC du patient 
 def gestionIMC(dataGroup):
 
     if dataGroup == "dataECMO":
@@ -112,6 +178,7 @@ def gestionIMC(dataGroup):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
+# Moyennage pour la diurèse
 def gestionDiurese(dataGroup, h_for_avg):
     
     if dataGroup == "dataECMO":
@@ -157,7 +224,7 @@ def gestionDiurese(dataGroup, h_for_avg):
         newDfPath = preProcessedDataPath + encounterId + "/Diurese_Moy.parquet"
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
-
+# Moyennage pour SpO2/FiO2
 def gestionFiO2(dataGroup, frequenceAcquisition):
 
     if dataGroup == "dataECMO":
@@ -229,67 +296,6 @@ def gestionFiO2(dataGroup, frequenceAcquisition):
         pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
 
 
-def moyenne_sur_x_minutes(dataGroup, variableStr, frequenceAcquisition, columnValuesStr):
-    
-    if dataGroup == "dataECMO":
-        dataPath = "dataECMO/"
-    else:
-        dataPath = "dataRea/"
-    
-    patients_df = pd.read_parquet(dataPath + "patients.parquet")
-
-    preProcessedDataPath = dataPath + "preProcessedData/"
-    nb_patients = len(patients_df)
-
-    for index, row in tqdm(patients_df.iterrows(), total=nb_patients):
-
-        encounterId = str(row["encounterId"])
-
-        dfPath = preProcessedDataPath + encounterId + "/" + variableStr + ".parquet"
-        
-        df = pd.read_parquet(dfPath)
-
-        sizeDf = df[columnValuesStr].size
-        new_index = range(sizeDf)
-        df.index = new_index
-
-        liste_valeurs = []
-        
-        # Test si le df est vide
-        if sizeDf > 0:
-            lastTime = int(df['temps'].iloc[-1] // frequenceAcquisition)
-        else:
-            lastTime = 0
-
-        nbValeurs = df.index.max()+1
-
-        # On calcule la valeur moyenne de la variable d'intérêt sur un intervalle de temps donné en paramètre
-        index_current_time = 0
-        for i in range(lastTime):
-            valeur_moy = 0
-            current_time = df['temps'][index_current_time]
-            compteur = 0
-            while (current_time < (i+1)*frequenceAcquisition) and (index_current_time < nbValeurs):
-                valeur_moy += df[columnValuesStr][index_current_time] 
-
-                index_current_time += 1
-                current_time = df['temps'][index_current_time]
-                compteur += 1
-            
-            if compteur > 0:
-                liste_valeurs.append(valeur_moy/compteur)
-            else:
-                liste_valeurs.append(np.nan)
-
-        
-        liste_temps = list(range(0,lastTime*frequenceAcquisition,frequenceAcquisition))
-
-        newdf = pd.DataFrame({columnValuesStr: liste_valeurs, 'temps': liste_temps})
-
-        newDfPath = preProcessedDataPath + encounterId + "/" + variableStr + "_Moy.parquet"
-        pq.write_table(pa.Table.from_pandas(newdf), newDfPath)
-
-
 
 # gestionIMC(dataGroup)
 # gestionDiurese(dataGroup, 6)
@@ -307,4 +313,4 @@ def moyenne_sur_x_minutes(dataGroup, variableStr, frequenceAcquisition, columnVa
 # moyenne_sur_x_minutes(dataGroup, "PAS_NI", 60, 'pas_ni')
 # gestionFiO2(dataGroup, 60)
 
-# moyenne_sur_x_minutes(dataGroup, "FiO2", 60, 'FiO2') # Facultatif
+# moyenne_sur_x_minutes(dataGroup, "FiO2", 60, 'FiO2')

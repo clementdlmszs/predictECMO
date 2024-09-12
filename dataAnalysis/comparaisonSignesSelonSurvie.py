@@ -1,3 +1,5 @@
+# Affichage des courbes des moyennes des valeurs (en fonction de la survie) en fonction du temps
+
 import pandas as pd
 import numpy as np
 from tqdm import tqdm

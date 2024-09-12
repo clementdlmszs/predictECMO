@@ -6,7 +6,7 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 from datetime import datetime
 
-
+# Algorithme naïf de prédiction des valeurs manquantes: pour chaque valeur manquante, on associe la valeur existante la plus proche, et si deux valeurs plus proches, la moyenne de ces 2 valeurs
 def gestionValeursManquantes(dataGroup, variableStr, columnValuesStr, defaultValue):
 
     if dataGroup == "dataECMO":
